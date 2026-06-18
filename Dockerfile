@@ -49,9 +49,9 @@ COPY --from=tools /out/kubectl /usr/local/bin/kubectl
 # COPY --from=tools /out/helm /usr/local/bin/helm
 
 # Eigener eingeschränkter User
-RUN useradd --create-home --uid 1000 --shell /usr/sbin/nologin appuser \
- && chown -R 1000:1000 /usr/local/app
+RUN useradd --create-home --uid 10001 --shell /usr/sbin/nologin appuser \
+ && chown -R 10001:10001 /usr/local/app
 
-USER 1000:1000
+USER 10001:10001
 
 CMD ["node", "dist/index.js"]
