@@ -36,8 +36,7 @@ RUN apt-get update \
 #  && install -m 0755 "/tmp/linux-${TARGETARCH}/helm" /out/helm \
 #  && rm -rf /tmp/helm.tgz "/tmp/linux-${TARGETARCH}"
 
-FROM node:24-bookworm-slim
-ARG TARGETARCH
+FROM node:24-alpine
 
 ENV NODE_ENV=production
 WORKDIR /usr/local/app
@@ -49,19 +48,8 @@ COPY --from=source /usr/local/app /usr/local/app
 COPY --from=tools /out/kubectl /usr/local/bin/kubectl
 # COPY --from=tools /out/helm /usr/local/bin/helm
 
-RUN apt-get update \
- && apt-get install -y --no-install-recommends \
-      ca-certificates \
-      curl \
-      unzip \
- && rm -rf /var/lib/apt/lists/*
-
-RUN target_arch="${TARGETARCH:-$(dpkg --print-architecture)}" \
- && AWSCLI_ARCH=x86_64 \
- && [ "${target_arch}" = "arm64" ] && AWSCLI_ARCH=aarch64 || true \
- && curl -fsSLo /tmp/awscliv2.zip "https://awscli.amazonaws.com/awscli-exe-linux-${AWSCLI_ARCH}.zip" \
- && unzip -q /tmp/awscliv2.zip -d /tmp \
- && /tmp/aws/install --install-dir /usr/local/aws-cli --bin-dir /usr/local/bin \
- && rm -rf /tmp/aws /tmp/awscliv2.zip
+RUN apk add --no-cache \
+     ca-certificates \
+     aws-cli
 
 CMD ["node", "dist/index.js"]
