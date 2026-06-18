@@ -3,7 +3,7 @@ FROM flux159/mcp-server-kubernetes:v3.5.0 AS source
 FROM debian:bookworm-slim AS tools
 ARG TARGETARCH
 ARG KUBECTL_APT_MINOR=v1.36
-ARG HELM_VERSION=v4.2.2
+# ARG HELM_VERSION=v4.2.2
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
@@ -37,16 +37,15 @@ RUN apt-get update \
 #  && rm -rf /tmp/helm.tgz "/tmp/linux-${TARGETARCH}"
 
 FROM node:24-bookworm-slim
-# FROM node:24-alpine
 ARG TARGETARCH
 
 ENV NODE_ENV=production
 WORKDIR /usr/local/app
 
-# App aus dem Upstream-Image
+# App from Upstream-Image
 COPY --from=source /usr/local/app /usr/local/app
 
-# Nur die benötigten Tools
+# Only the necessary tools
 COPY --from=tools /out/kubectl /usr/local/bin/kubectl
 # COPY --from=tools /out/helm /usr/local/bin/helm
 
@@ -64,15 +63,5 @@ RUN target_arch="${TARGETARCH:-$(dpkg --print-architecture)}" \
  && unzip -q /tmp/awscliv2.zip -d /tmp \
  && /tmp/aws/install --install-dir /usr/local/aws-cli --bin-dir /usr/local/bin \
  && rm -rf /tmp/aws /tmp/awscliv2.zip
-
-# # Eigener eingeschränkter User
-# RUN useradd --create-home --uid 10001 --shell /usr/sbin/nologin appuser \
-#  && chown -R 10001:10001 /usr/local/app
-
-# # RUN addgroup -g 10001 -S appuser \
-# #   && adduser -S -D -H -u 10001 -G appuser appuser \
-# #   && chown -R 10001:10001 /usr/local/app
-
-# USER 10001:10001
 
 CMD ["node", "dist/index.js"]
