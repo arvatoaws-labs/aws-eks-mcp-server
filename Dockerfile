@@ -12,7 +12,6 @@ RUN apt-get update \
       curl \
       gnupg \
       tar \
-      unzip \
       apt-transport-https \
  && rm -rf /var/lib/apt/lists/*
 
@@ -31,14 +30,6 @@ RUN apt-get update \
  && install -m 0755 /usr/bin/kubectl /out/kubectl \
  && rm -rf /var/lib/apt/lists/*
 
-RUN target_arch="${TARGETARCH:-$(dpkg --print-architecture)}" \
- && AWSCLI_ARCH=x86_64 \
- && [ "${target_arch}" = "arm64" ] && AWSCLI_ARCH=aarch64 || true \
- && curl -fsSLo /tmp/awscliv2.zip "https://awscli.amazonaws.com/awscli-exe-linux-${AWSCLI_ARCH}.zip" \
- && unzip -q /tmp/awscliv2.zip -d /tmp \
- && /tmp/aws/install --install-dir /usr/local/aws-cli --bin-dir /usr/local/bin \
- && rm -rf /tmp/aws /tmp/awscliv2.zip
-
 # RUN curl -fsSLo /tmp/helm.tgz \
 #     "https://get.helm.sh/helm-${HELM_VERSION}-linux-${TARGETARCH}.tar.gz" \
 #  && tar -xzf /tmp/helm.tgz -C /tmp \
@@ -47,6 +38,7 @@ RUN target_arch="${TARGETARCH:-$(dpkg --print-architecture)}" \
 
 FROM node:24-bookworm-slim
 # FROM node:24-alpine
+ARG TARGETARCH
 
 ENV NODE_ENV=production
 WORKDIR /usr/local/app
@@ -56,9 +48,22 @@ COPY --from=source /usr/local/app /usr/local/app
 
 # Nur die benötigten Tools
 COPY --from=tools /out/kubectl /usr/local/bin/kubectl
-COPY --from=tools /usr/local/aws-cli /usr/local/aws-cli
-COPY --from=tools /usr/local/bin/aws /usr/local/bin/aws
 # COPY --from=tools /out/helm /usr/local/bin/helm
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+      ca-certificates \
+      curl \
+      unzip \
+ && rm -rf /var/lib/apt/lists/*
+
+RUN target_arch="${TARGETARCH:-$(dpkg --print-architecture)}" \
+ && AWSCLI_ARCH=x86_64 \
+ && [ "${target_arch}" = "arm64" ] && AWSCLI_ARCH=aarch64 || true \
+ && curl -fsSLo /tmp/awscliv2.zip "https://awscli.amazonaws.com/awscli-exe-linux-${AWSCLI_ARCH}.zip" \
+ && unzip -q /tmp/awscliv2.zip -d /tmp \
+ && /tmp/aws/install --install-dir /usr/local/aws-cli --bin-dir /usr/local/bin \
+ && rm -rf /tmp/aws /tmp/awscliv2.zip
 
 # Eigener eingeschränkter User
 RUN useradd --create-home --uid 10001 --shell /usr/sbin/nologin appuser \
