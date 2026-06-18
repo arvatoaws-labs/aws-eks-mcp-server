@@ -65,14 +65,14 @@ RUN target_arch="${TARGETARCH:-$(dpkg --print-architecture)}" \
  && /tmp/aws/install --install-dir /usr/local/aws-cli --bin-dir /usr/local/bin \
  && rm -rf /tmp/aws /tmp/awscliv2.zip
 
-# Eigener eingeschränkter User
-RUN useradd --create-home --uid 10001 --shell /usr/sbin/nologin appuser \
- && chown -R 10001:10001 /usr/local/app
+# # Eigener eingeschränkter User
+# RUN useradd --create-home --uid 10001 --shell /usr/sbin/nologin appuser \
+#  && chown -R 10001:10001 /usr/local/app
 
-# RUN addgroup -g 10001 -S appuser \
-#   && adduser -S -D -H -u 10001 -G appuser appuser \
-#   && chown -R 10001:10001 /usr/local/app
+# # RUN addgroup -g 10001 -S appuser \
+# #   && adduser -S -D -H -u 10001 -G appuser appuser \
+# #   && chown -R 10001:10001 /usr/local/app
 
-USER 10001:10001
+# USER 10001:10001
 
 CMD ["node", "dist/index.js"]
