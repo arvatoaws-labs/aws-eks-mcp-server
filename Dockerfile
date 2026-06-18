@@ -30,7 +30,9 @@ RUN apt-get update \
  && install -m 0755 /usr/bin/kubectl /out/kubectl \
  && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get -y install awscli
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends awscli \
+ && rm -rf /var/lib/apt/lists/*
 
 # RUN curl -fsSLo /tmp/helm.tgz \
 #     "https://get.helm.sh/helm-${HELM_VERSION}-linux-${TARGETARCH}.tar.gz" \
