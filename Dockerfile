@@ -36,7 +36,8 @@ RUN apt-get update \
 #  && install -m 0755 "/tmp/linux-${TARGETARCH}/helm" /out/helm \
 #  && rm -rf /tmp/helm.tgz "/tmp/linux-${TARGETARCH}"
 
-FROM node:24-bookworm-slim
+# FROM node:24-bookworm-slim
+FROM node:24-alpine
 
 ENV NODE_ENV=production
 WORKDIR /usr/local/app
