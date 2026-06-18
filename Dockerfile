@@ -36,7 +36,7 @@ RUN target_arch="${TARGETARCH:-$(dpkg --print-architecture)}" \
  && [ "${target_arch}" = "arm64" ] && AWSCLI_ARCH=aarch64 || true \
  && curl -fsSLo /tmp/awscliv2.zip "https://awscli.amazonaws.com/awscli-exe-linux-${AWSCLI_ARCH}.zip" \
  && unzip -q /tmp/awscliv2.zip -d /tmp \
- && /tmp/aws/install --install-dir /out/aws-cli --bin-dir /out/bin \
+ && /tmp/aws/install --install-dir /usr/local/aws-cli --bin-dir /usr/local/bin \
  && rm -rf /tmp/aws /tmp/awscliv2.zip
 
 # RUN curl -fsSLo /tmp/helm.tgz \
@@ -56,8 +56,8 @@ COPY --from=source /usr/local/app /usr/local/app
 
 # Nur die benötigten Tools
 COPY --from=tools /out/kubectl /usr/local/bin/kubectl
-COPY --from=tools /out/aws-cli /usr/local/aws-cli
-COPY --from=tools /out/bin/aws /usr/local/bin/aws
+COPY --from=tools /usr/local/aws-cli /usr/local/aws-cli
+COPY --from=tools /usr/local/bin/aws /usr/local/bin/aws
 # COPY --from=tools /out/helm /usr/local/bin/helm
 
 # Eigener eingeschränkter User
