@@ -30,14 +30,16 @@ RUN apt-get update \
  && install -m 0755 /usr/bin/kubectl /out/kubectl \
  && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get -y install awscli
+
 # RUN curl -fsSLo /tmp/helm.tgz \
 #     "https://get.helm.sh/helm-${HELM_VERSION}-linux-${TARGETARCH}.tar.gz" \
 #  && tar -xzf /tmp/helm.tgz -C /tmp \
 #  && install -m 0755 "/tmp/linux-${TARGETARCH}/helm" /out/helm \
 #  && rm -rf /tmp/helm.tgz "/tmp/linux-${TARGETARCH}"
 
-# FROM node:24-bookworm-slim
-FROM node:24-alpine
+FROM node:24-bookworm-slim
+# FROM node:24-alpine
 
 ENV NODE_ENV=production
 WORKDIR /usr/local/app
@@ -52,6 +54,10 @@ COPY --from=tools /out/kubectl /usr/local/bin/kubectl
 # Eigener eingeschränkter User
 RUN useradd --create-home --uid 10001 --shell /usr/sbin/nologin appuser \
  && chown -R 10001:10001 /usr/local/app
+
+# RUN addgroup -g 10001 -S appuser \
+#   && adduser -S -D -H -u 10001 -G appuser appuser \
+#   && chown -R 10001:10001 /usr/local/app
 
 USER 10001:10001
 
