@@ -1,5 +1,5 @@
 # Base Image for the MCP stuff
-FROM flux159/mcp-server-kubernetes:v3.5.0 AS source
+FROM flux159/mcp-server-kubernetes:v3.9.1 AS source
 
 # Final Image for the whole app
 FROM node:24-alpine
