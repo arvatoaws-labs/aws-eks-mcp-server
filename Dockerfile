@@ -15,6 +15,9 @@ COPY --from=source /root/.local /root/.local
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1
 
+# Run as non-root user
+USER app
+
 ENTRYPOINT ["awslabs.eks-mcp-server"]
 
 # # Base Image for the MCP stuff
