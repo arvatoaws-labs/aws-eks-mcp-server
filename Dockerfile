@@ -6,6 +6,9 @@ FROM amazonlinux:latest
 
 WORKDIR /app
 
+# Install required tools
+RUN dnf install -y shadow-utils && dnf clean all
+
 # Create app user (same as in source image)
 RUN groupadd --force --system app && \
     useradd app -g app -d /app
