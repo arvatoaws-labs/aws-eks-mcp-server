@@ -2,7 +2,7 @@
 FROM public.ecr.aws/awslabs-mcp/awslabs/eks-mcp-server:0.1.32 AS source
 
 # Final minimal image - Chainguard Python (secure, minimal, glibc-compatible)
-FROM cgr.dev/chainguard/python:latest
+FROM amazonlinux:latest
 
 WORKDIR /app
 
