@@ -2,7 +2,8 @@
 FROM ghcr.io/containers/kubernetes-mcp-server:latest AS source
 
 # Final minimal image with Amazon Linux
-FROM amazonlinux:latest
+# FROM amazonlinux:latest
+FROM amazon/aws-cli:latest
 
 WORKDIR /app
 
