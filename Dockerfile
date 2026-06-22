@@ -6,11 +6,15 @@ FROM amazonlinux:latest
 
 WORKDIR /app
 
+# Create app user (same as in source image)
+RUN groupadd --force --system app && \
+    useradd app -g app -d /app
+
 # Copy entire app directory from source (includes .venv and all app files)
-COPY --from=source /app /app
+COPY --from=source --chown=app:app /app /app
 
 # Copy local dependencies
-COPY --from=source /root/.local /root/.local
+COPY --from=source --chown=app:app /root/.local /root/.local
 
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1
