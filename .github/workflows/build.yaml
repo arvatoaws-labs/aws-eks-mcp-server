@@ -25,7 +25,7 @@ jobs:
     - name: Docker meta Dev
       id: meta-arm64-dev
       if: github.ref == 'refs/heads/dev'
-      uses: docker/metadata-action@v5
+      uses: docker/metadata-action@v6
       with:
         images: ghcr.io/arvatoaws-labs/aws-eks-mcp-server
         flavor: |
@@ -44,7 +44,7 @@ jobs:
     - name: Docker meta Prod
       id: meta-arm64-prod
       if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
-      uses: docker/metadata-action@v5
+      uses: docker/metadata-action@v6
       with:
         images: ghcr.io/arvatoaws-labs/aws-eks-mcp-server
         flavor: |
@@ -100,7 +100,7 @@ jobs:
     - name: Docker meta Dev
       id: meta-amd64-dev
       if: github.ref == 'refs/heads/dev'
-      uses: docker/metadata-action@v5
+      uses: docker/metadata-action@v6
       with:
         images: ghcr.io/arvatoaws-labs/aws-eks-mcp-server
         flavor: |
@@ -119,7 +119,7 @@ jobs:
     - name: Docker meta Prod
       id: meta-amd64-prod
       if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
-      uses: docker/metadata-action@v5
+      uses: docker/metadata-action@v6
       with:
         images: ghcr.io/arvatoaws-labs/aws-eks-mcp-server
         flavor: |
@@ -161,7 +161,7 @@ jobs:
     - name: Docker meta Dev
       id: meta-dev
       if: github.ref == 'refs/heads/dev'
-      uses: docker/metadata-action@v5
+      uses: docker/metadata-action@v6
       with:
         images: ghcr.io/arvatoaws-labs/aws-eks-mcp-server
         flavor: |
@@ -179,7 +179,7 @@ jobs:
     - name: Docker meta Prod
       id: meta-prod
       if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
-      uses: docker/metadata-action@v5
+      uses: docker/metadata-action@v6
       with:
         images: ghcr.io/arvatoaws-labs/aws-eks-mcp-server
         flavor: |
