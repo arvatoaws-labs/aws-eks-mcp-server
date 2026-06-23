@@ -1,6 +1,6 @@
 # aws-eks-mcp-server
 
-Docker setup for an MCP server based on `flux159/mcp-server-kubernetes` with additional AWS and Kubernetes CLI tools.
+Docker setup for an MCP server based on `containers/kubernetes-mcp-server` with AWS CLI in a minimal runtime image.
 
 ## Intention
 
@@ -10,11 +10,10 @@ Docker setup for an MCP server based on `flux159/mcp-server-kubernetes` with add
 
 ## Contents
 
-- Base application from `flux159/mcp-server-kubernetes`
-- Runtime image based on `node:24-alpine`
+- Base application binary copied from `ghcr.io/containers/kubernetes-mcp-server:v0.0.63`
+- Runtime image based on `public.ecr.aws/aws-cli/aws-cli`
 - Additional tools included in the container:
 	- `aws-cli`
-	- `kubectl`
 
 ## Requirements
 
@@ -29,21 +28,21 @@ docker build -t aws-eks-mcp-server:latest .
 ## Run the container
 
 ```sh
-docker run --rm -it aws-eks-mcp-server:latest
+docker run --rm -it -p 8080:8080 aws-eks-mcp-server:latest
 ```
 
 ## Quick tool check inside the container
 
 ```sh
-docker run --rm --entrypoint sh aws-eks-mcp-server:latest -lc "node --version && aws --version && kubectl version --client=true"
+docker run --rm --entrypoint sh aws-eks-mcp-server:latest -lc "/app/kubernetes-mcp-server --help >/dev/null && aws --version"
 ```
 
 ## AWS CLI note
 
-If your deployment uses a read-only root filesystem, AWS CLI needs a writable path for config/cache (for example mounted at `/home/node/.aws`).
+If your deployment uses a read-only root filesystem, AWS CLI needs a writable path for config/cache (for example a writable mount used for AWS config files).
 
 ## Licenses
 
-- Project license: see `LICENSE`
+- Project license: Apache License 2.0 (see `LICENSE`)
 - Third-party notices: see `THIRD_PARTY_NOTICES`
 
