@@ -1,9 +1,8 @@
 # Build stage - extract the Kubernetes MCP server binary
 FROM ghcr.io/containers/kubernetes-mcp-server:latest AS source
 
-# Final minimal image with Amazon Linux
-# FROM amazonlinux:latest
-FROM amazon/aws-cli:latest
+# Final minimal image with Amazon AWS CLI, we need it for cross-accaount role switch
+FROM public.ecr.aws/aws-cli/aws-cli:2.35.11
 
 WORKDIR /app
 
