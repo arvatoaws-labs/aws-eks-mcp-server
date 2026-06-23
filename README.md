@@ -4,16 +4,12 @@ Docker setup for an MCP server based on `containers/kubernetes-mcp-server` with 
 
 ## Intention
 
-- The upstream base image includes many tools that are not needed for our AWS EKS use case.
-- The upstream base image is larger than necessary for this deployment.
-- The upstream base image has more vulnerabilities due to unnecessary tools and additional base image layers.
+- The upstream base image does not have AWS compatibility for switching roles in a multi-cluster setup. Therefore we are using the aws-cli.
 
 ## Contents
 
-- Base application binary copied from `ghcr.io/containers/kubernetes-mcp-server:v0.0.63`
+- Base application binary copied from `ghcr.io/containers/kubernetes-mcp-server`
 - Runtime image based on `public.ecr.aws/aws-cli/aws-cli`
-- Additional tools included in the container:
-	- `aws-cli`
 
 ## Requirements
 
