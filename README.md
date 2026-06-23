@@ -24,13 +24,13 @@ docker build -t aws-eks-mcp-server:latest .
 ## Run the container
 
 ```sh
-docker run --rm -it -p 8080:8080 aws-eks-mcp-server:latest
+docker run --rm -it -p 8080:8080 ghcr.io/arvatoaws-labs/aws-eks-mcp-server:latest
 ```
 
 ## Quick tool check inside the container
 
 ```sh
-docker run --rm --entrypoint sh aws-eks-mcp-server:latest -lc "/app/kubernetes-mcp-server --help >/dev/null && aws --version"
+docker run --rm --entrypoint sh ghcr.io/arvatoaws-labs/aws-eks-mcp-server:latest -lc "/app/kubernetes-mcp-server --help >/dev/null && aws --version"
 ```
 
 ## AWS CLI note
