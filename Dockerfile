@@ -2,7 +2,7 @@
 FROM ghcr.io/containers/kubernetes-mcp-server:v0.0.63 AS source
 
 # Final minimal image with Amazon AWS CLI, we need it for cross-accaount role switch
-FROM public.ecr.aws/aws-cli/aws-cli:2.35.11
+FROM public.ecr.aws/aws-cli/aws-cli:2.35.14
 
 WORKDIR /app
 
