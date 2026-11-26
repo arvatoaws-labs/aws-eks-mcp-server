@@ -1,5 +1,7 @@
 # aws-eks-mcp-server
 
+> **Archived:** This repository is no longer maintained and will not receive updates.
+
 Docker setup for an MCP server based on `containers/kubernetes-mcp-server` with AWS CLI in a minimal runtime image.
 
 ## Intention
